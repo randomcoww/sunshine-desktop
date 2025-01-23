@@ -28,28 +28,25 @@ RUN set -x \
 ARG FEDORA_VERSION
 FROM fedora:$FEDORA_VERSION AS sunshine
 
-RUN <<_BUILD
-#!/bin/bash
-set -xe
-
-dnf install -y --setopt=install_weak_deps=False \
-  git-core \
-  jq
-
-VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v')
-git clone -b v$VERSION \
-  --recurse-submodules https://github.com/LizardByte/Sunshine.git /sunshine
-cd /sunshine
-
-chmod +x ./scripts/linux_build.sh
-./scripts/linux_build.sh \
-  --publisher-name='LizardByte' \
-  --publisher-website='https://app.lizardbyte.dev' \
-  --publisher-issue-url='https://app.lizardbyte.dev/support' \
-  --sudo-off
-dnf clean all
-rm -rf /var/cache/yum
-_BUILD
+RUN set -x \
+  \
+  && dnf install -y --setopt=install_weak_deps=False \
+    git-core \
+    jq \
+  \
+  && VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v') \
+  && git clone -b v$VERSION \
+    --recurse-submodules https://github.com/LizardByte/Sunshine.git /sunshine \
+  && cd /sunshine \
+  && chmod +x ./scripts/linux_build.sh \
+  && ./scripts/linux_build.sh \
+      --publisher-name='LizardByte' \
+      --publisher-website='https://app.lizardbyte.dev' \
+      --publisher-issue-url='https://app.lizardbyte.dev/support' \
+      --sudo-off \
+  \
+  && dnf clean all \
+  && rm -rf /var/cache/yum
 
 ## Main build
 
