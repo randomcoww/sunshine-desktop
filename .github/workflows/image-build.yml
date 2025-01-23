@@ -10,7 +10,6 @@ jobs:
     runs-on: arc-runner-sunshine-desktop
     container:
       image: gcr.io/kaniko-project/executor:debug
-      options: --cap-add SETFCAP
     permissions:
       contents: read
       packages: write
