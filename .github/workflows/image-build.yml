@@ -1,0 +1,45 @@
+name: Image Build
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    runs-on: arc-runner-sunshine-desktop
+    container:
+      image: gcr.io/kaniko-project/executor:debug
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Build and release container
+      run: |
+        # References:
+        # https://some-natalie.dev/blog/kaniko-in-arc/
+        # https://dev.to/ipo/using-kaniko-to-build-and-publish-container-image-with-github-action-on-github-self-hosted-runners-d5m
+
+        cat > /kaniko/.docker/config.json <<EOF
+        {
+          "auths": {
+            "ghcr.io": {
+              "auth": "$(echo -n ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }} | base64 -w0)"
+            }
+          }
+        }
+        EOF
+
+        FEDORA_VERSION=39
+        VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v')
+        S6_OVERLAY_VERSION=$(curl -s https://api.github.com/repos/just-containers/s6-overlay/releases/latest |grep tag_name | cut -d '"' -f 4 | tr -d 'v')
+
+        /kaniko/executor \
+          --dockerfile="./Containerfile" \
+          --context="${{ github.repositoryUrl }}#${{ github.ref }}#${{ github.sha }}" \
+          --destination="ghcr.io/${{ github.repository }}:$VERSION" \
+          --build-arg TARGETARCH=$TARGETARCH \
+          --build-arg FEDORA_VERSION=$FEDORA_VERSION \
+          --build-arg VERSION=$VERSION \
+          --build-arg S6_OVERLAY_VERSION=$S6_OVERLAY_VERSION \
+          --push-retry 3

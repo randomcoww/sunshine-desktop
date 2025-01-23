@@ -1,0 +1,16 @@
+{
+  "apps": [
+    {
+      "name": "Desktop",
+      "image-path": "desktop.png",
+      "prep-cmd": [
+        {
+          "do": "/etc/sunshine/set-resolution.sh"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "PATH": "$(PATH):$(HOME)/.local/bin"
+  }
+}
