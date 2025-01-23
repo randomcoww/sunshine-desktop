@@ -5,18 +5,18 @@ ARG FEDORA_VERSION
 # https://github.com/linuxserver/docker-baseimage-fedora/blob/master/Dockerfile
 FROM alpine:edge AS rootfs-stage
 
-ARG S6_OVERLAY_VERSION
 RUN set -x \
   \
+  && VERSION=$(wget -O - https://api.github.com/repos/just-containers/s6-overlay/releases/latest |grep tag_name | cut -d '"' -f 4 | tr -d 'v') \
   && mkdir -p /root-out src \
   && wget -O src/s6-overlay-noarch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz \
+    https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-noarch.tar.xz \
   && wget -O src/s6-overlay-arch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-$(arch).tar.xz \
+    https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-$(arch).tar.xz \
   && wget -O src/s6-overlay-symlinks-noarch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-symlinks-noarch.tar.xz \
+    https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-symlinks-noarch.tar.xz \
   && wget -O src/s6-overlay-symlinks-arch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-symlinks-arch.tar.xz \
+    https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-symlinks-arch.tar.xz \
   && tar -C /root-out -Jxpf src/s6-overlay-noarch.tar.xz \
   && tar -C /root-out -Jxpf src/s6-overlay-arch.tar.xz \
   && tar -C /root-out -Jxpf src/s6-overlay-symlinks-noarch.tar.xz \
@@ -28,14 +28,15 @@ RUN set -x \
 ARG FEDORA_VERSION
 FROM fedora:$FEDORA_VERSION AS sunshine
 
-ARG VERSION
 RUN <<_BUILD
 #!/bin/bash
 set -xe
 
 dnf install -y --setopt=install_weak_deps=False \
-  git-core
+  git-core \
+  jq
 
+VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v')
 git clone -b v$VERSION \
   --recurse-submodules https://github.com/LizardByte/Sunshine.git /sunshine
 cd /sunshine
