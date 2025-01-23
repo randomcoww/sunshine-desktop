@@ -33,7 +33,6 @@ RUN set -x \
   && dnf install -y --setopt=install_weak_deps=False \
     git-core \
     jq \
-    gstreamer1 \
   \
   && VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v') \
   && git clone -b v$VERSION \
