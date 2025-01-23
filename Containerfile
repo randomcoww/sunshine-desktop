@@ -26,7 +26,7 @@ RUN set -x \
 ## Build sunshine for fedora
 
 ARG FEDORA_VERSION
-FROM fedora:$FEDORA_VERSION AS sunshine
+FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION AS sunshine
 
 RUN set -x \
   \
