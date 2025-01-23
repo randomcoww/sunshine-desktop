@@ -7,6 +7,8 @@ on:
 
 jobs:
   build:
+    env:
+      ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER: "false"
     runs-on: arc-runner-sunshine-desktop
     # Needs setfcap to run - copy kaniko to runner and run from runner
     # container:
