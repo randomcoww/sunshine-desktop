@@ -37,4 +37,5 @@ jobs:
           --destination="ghcr.io/${{ github.repository }}:${{ github.head_ref || github.ref_name }}" \
           --build-arg FEDORA_VERSION=39 \
           --kaniko-dir=/kaniko \
+          --force \
           --no-push
