@@ -11,10 +11,9 @@ on:
 
 jobs:
   build:
-    runs-on: arc-runner-sunshine-desktop
-    # Needs setfcap to run - copy kaniko to runner and run from runner
-    # container:
-    #   image: gcr.io/kaniko-project/executor:debug
+    runs-on: arc-runner-code-server
+    container:
+      image: gcr.io/kaniko-project/executor:debug
     permissions:
       contents: read
       packages: write
@@ -36,6 +35,4 @@ jobs:
           --context="${{ github.repositoryUrl }}#${{ github.ref }}#${{ github.sha }}" \
           --destination="ghcr.io/${{ github.repository }}:${{ github.head_ref || github.ref_name }}" \
           --build-arg FEDORA_VERSION=39 \
-          --kaniko-dir=/kaniko \
-          --force \
-          --no-push
+          --push-retry 3
