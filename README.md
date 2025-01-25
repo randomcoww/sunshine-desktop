@@ -1,5 +1,7 @@
 ### Container for Sunshine with integrated XFCE desktop
 
+https://github.com/LizardByte/Sunshine
+
 Reference: https://github.com/Steam-Headless/docker-steam-headless/tree/master
 
 - Based on Fedora 39 (Sunshine CUDA build only supports up to F39).
