@@ -1,6 +1,6 @@
-### Image build
+### Container for Sunshine with integrated XFCE desktop
 
-This is based on https://github.com/Steam-Headless/docker-steam-headless/tree/master
+Reference: https://github.com/Steam-Headless/docker-steam-headless/tree/master
 
 - Based on Fedora 39 (Sunshine CUDA build only supports up to F39).
 - Sunshine only to access the desktop. No VNC.
