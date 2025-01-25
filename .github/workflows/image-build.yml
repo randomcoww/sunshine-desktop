@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: arc-runner-code-server
+    runs-on: arc-runner-sunshine-desktop
     container:
       image: gcr.io/kaniko-project/executor:debug
     permissions:
@@ -34,5 +34,4 @@ jobs:
           --dockerfile="./Containerfile" \
           --context="${{ github.repositoryUrl }}#${{ github.ref }}#${{ github.sha }}" \
           --destination="ghcr.io/${{ github.repository }}:${{ github.head_ref || github.ref_name }}" \
-          --build-arg FEDORA_VERSION=39 \
           --push-retry 3

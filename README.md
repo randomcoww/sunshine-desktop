@@ -7,17 +7,16 @@ This is based on https://github.com/Steam-Headless/docker-steam-headless/tree/ma
 - Nvidia GPUs only. Setup breaks unless `nvidia-smi` can run.
 - Intended to work in Kubernetes with configMap mounts to support service configuration.
 
+Latest version
+
 ```bash
-TARGETARCH=amd64
-FEDORA_VERSION=39
-TAG=ghcr.io/randomcoww/sunshine-desktop:$(date -u +'%Y%m%d')
+curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v'
+```
 
-podman build \
-  --net host \
-  --arch $TARGETARCH \
-  --build-arg TARGETARCH=$TARGETARCH \
-  --build-arg FEDORA_VERSION=$FEDORA_VERSION \
-  -t $TAG .
+Tag latest by date
 
-podman push $TAG
+```bash
+TAG=v$(date -u +'%Y%m%d').1
+git tag -a $TAG
+git push origin $TAG
 ```
