@@ -124,11 +124,8 @@ RUN set -x \
   && microdnf clean all \
   && rm -rf \
     /var/cache \
-    /var/log/*  \
-  \
-  # delete temp repo stuff
-  && rm -rf /RPMS \
-  && rm -f /etc/yum.repos.d/local.repo
+    /var/log/* \
+    /Sunshine.rpm
 
 RUN set -x \
   \
