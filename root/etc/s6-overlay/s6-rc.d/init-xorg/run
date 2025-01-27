@@ -9,7 +9,7 @@ DRIVER_FILE=$HOME/nvidia/NVIDIA-Linux-$(arch)-${VERSION}.run
 
 if [[ ! -f "$DRIVER_FILE" ]]; then
   curl -L -o $DRIVER_FILE \
-    http://download.nvidia.com/XFree86/Linux-$(arch)/${VERSION}/NVIDIA-Linux-$(arch)-${VERSION}.run
+    https://download.nvidia.com/XFree86/Linux-$(arch)/${VERSION}/NVIDIA-Linux-$(arch)-${VERSION}.run
 fi
 
 chmod +x $DRIVER_FILE
