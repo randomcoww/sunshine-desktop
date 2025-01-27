@@ -34,6 +34,4 @@ jobs:
           --dockerfile="./Containerfile" \
           --context="${{ github.repositoryUrl }}#${{ github.ref }}#${{ github.sha }}" \
           --destination="ghcr.io/${{ github.repository }}:${{ github.head_ref || github.ref_name }}" \
-          --ignore-path=/RPMS \
-          --ignore-path=/etc/yum.repos.d/local.repo \
           --push-retry 3

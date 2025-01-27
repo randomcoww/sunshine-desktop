@@ -43,42 +43,12 @@ RUN set -x \
     --publisher-issue-url='https://app.lizardbyte.dev/support' \
     --sudo-off
 
-## create local repo for sunshine and flatpak without dbus dependency
-
-FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION AS repo
-
-RUN set -x \
-  \
-  && HOME=/root \
-  && dnf install -y --setopt=install_weak_deps=False \
-    rpmdevtools \
-    dnf-plugins-core \
-    git \
-    createrepo \
-  \
-  && mkdir -p /root/rpmbuild \
-  && cd /root/rpmbuild \
-  && git clone -b f$(rpm -E %fedora) https://src.fedoraproject.org/rpms/flatpak.git SOURCES/ \
-  && cd SOURCES \
-  && spectool -gR flatpak.spec \
-  && dnf builddep -y flatpak.spec \
-  && rpmbuild -bb flatpak.spec \
-    --without malcontent
-
-COPY --from=sunshine /sunshine/build/cpack_artifacts/Sunshine.rpm /
-
-RUN set -x \
-  \
-  && mv /Sunshine.rpm /root/rpmbuild/RPMS/$(arch)/ \
-  && find /root/rpmbuild/RPMS -type d -mindepth 1 -maxdepth 1 -exec createrepo '{}' \;
-
 ## main build
 
 FROM registry.fedoraproject.org/fedora-minimal:$FEDORA_VERSION
 
 COPY --from=rootfs-stage /root-out/ /
-COPY --from=repo /root/rpmbuild/RPMS /RPMS
-COPY local.repo /etc/yum.repos.d/
+COPY --from=sunshine /sunshine/build/cpack_artifacts/Sunshine.rpm /
 
 RUN set -x \
   \
@@ -148,7 +118,7 @@ RUN set -x \
     xfdesktop \
     xfwm4 \
     # apps
-    sunshine \
+    /Sunshine.rpm \
     flatpak \
   \
   && microdnf clean all \

@@ -1,7 +1,0 @@
-[local]
-name=local-$basearch
-type=rpm-md
-baseurl=/RPMS/$basearch/
-gpgcheck=0
-enabled=1
-priority=1
