@@ -4,17 +4,18 @@ set -xe
 
 mkdir -p $HOME/nvidia
 
-VERSION=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader --id=0)
-DRIVER_FILE=$HOME/nvidia/NVIDIA-Linux-$(arch)-${VERSION}.run
+arch=$(arch)
+driver_version=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader --id=0)
+driver_file=$HOME/nvidia/NVIDIA-Linux-${arch}-${version}.run
 
-if [[ ! -f "$DRIVER_FILE" ]]; then
-  curl -L -o $DRIVER_FILE \
-    https://download.nvidia.com/XFree86/Linux-$(arch)/${VERSION}/NVIDIA-Linux-$(arch)-${VERSION}.run
+if [[ ! -f "$driver_file" ]]; then
+  curl -L -o $driver_file \
+    https://download.nvidia.com/XFree86/${arch/x86_64/Linux-x86_64}/${driver_version}/NVIDIA-Linux-${arch}-${driver_version}.run
 fi
 
-chmod +x $DRIVER_FILE
+chmod +x $driver_file
 
-"$DRIVER_FILE" \
+"$driver_file" \
   --silent \
   --accept-license \
   --skip-depmod \
