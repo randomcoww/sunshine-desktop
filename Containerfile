@@ -33,7 +33,7 @@ RUN set -x \
     jq \
   \
   && VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v') \
-  && git clone -b v$VERSION \
+  && git clone --depth 1 -b v$VERSION \
     --recurse-submodules https://github.com/LizardByte/Sunshine.git /sunshine \
   && cd /sunshine \
   && chmod +x ./scripts/linux_build.sh \
