@@ -8,9 +8,7 @@ done
 
 exec s6-setuidgid $USER \
   sunshine \
-    key_rightalt_to_key_win=enabled \
     origin_web_ui_allowed=wan \
     port=$SUNSHINE_PORT \
-    native_pen_touch=disabled \
     file_apps=/etc/sunshine/apps.json \
-    upnp=off
+    upnp=off $SUNSHINE_EXTRA_ARGS
