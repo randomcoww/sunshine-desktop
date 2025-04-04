@@ -6,7 +6,7 @@ FROM alpine:edge AS rootfs-stage
 
 RUN set -x \
   \
-  && VERSION=$(wget -O - https://api.github.com/repos/just-containers/s6-overlay/releases/latest |grep tag_name | cut -d '"' -f 4 | tr -d 'v') \
+  && VERSION=$(wget -O - https://api.github.com/repos/just-containers/s6-overlay/releases/latest | grep tag_name | cut -d '"' -f 4 | tr -d 'v') \
   && mkdir -p /root-out src \
   && wget -O src/s6-overlay-noarch.tar.xz \
     https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-noarch.tar.xz \
@@ -25,6 +25,7 @@ RUN set -x \
 ## build sunshine for fedora
 
 FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION AS sunshine
+ARG VERSION
 
 RUN set -x \
   \
@@ -32,7 +33,7 @@ RUN set -x \
     git-core \
     jq \
   \
-  && VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v') \
+  # && VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v') \
   && git clone --depth 1 -b v$VERSION \
     --recurse-submodules https://github.com/LizardByte/Sunshine.git /sunshine \
   && cd /sunshine \
