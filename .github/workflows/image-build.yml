@@ -23,6 +23,11 @@ jobs:
       contents: read
       packages: write
     steps:
+    - name: Set tag
+      run: |
+        echo VERSION=$(wget -O - https://api.github.com/repos/LizardByte/Sunshine/tags | grep name | head -1 | cut -d '"' -f 4) | tee -a "$GITHUB_ENV"
+        echo TAG=$(date -u +'%Y%m%d.%H%M') | tee -a "$GITHUB_ENV"
+
     - name: Build and release container
       run: |
         cat > $DOCKER_CONFIG/config.json <<EOF
@@ -38,5 +43,5 @@ jobs:
         /kaniko/executor \
           --dockerfile="./Containerfile" \
           --context="${{ github.repositoryUrl }}#${{ github.ref }}#${{ github.sha }}" \
-          --destination="ghcr.io/${{ github.repository }}:v$(date -u +'%Y%m%d.%H%M')" \
+          --destination="ghcr.io/${{ github.repository }}:v$VERSION.$TAG" \
           --push-retry 3
