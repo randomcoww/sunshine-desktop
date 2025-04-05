@@ -10,3 +10,9 @@ Notable differences include
 - Built on Fedora 39 (Sunshine CUDA build only supports up to F39).
 - Runs on S6-overlay init.
 - Intended to work in Kubernetes with configMap mounts to support service configuration.
+
+Latest release
+
+```bash
+curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v'
+```
