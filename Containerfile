@@ -25,16 +25,22 @@ RUN set -x \
 FROM registry.fedoraproject.org/fedora:latest AS sunshine
 ARG VERSION
 
+COPY path.patch /path.patch
+
 RUN set -x \
   \
   && dnf install -y --setopt=install_weak_deps=False \
     git-core \
     jq \
+    kernel-devel \
   \
   # && VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v') \
   && git clone --depth 1 -b v$VERSION \
     --recurse-submodules https://github.com/LizardByte/Sunshine.git /sunshine \
   && cd /sunshine \
+  && ln -sf /usr/bin/gcc-14 /usr/local/bin/gcc \
+  && ln -sf /usr/bin/g++-14 /usr/local/bin/g++ \
+  && git apply /path.patch \
   && ./scripts/linux_build.sh \
     --publisher-name='LizardByte' \
     --publisher-website='https://app.lizardbyte.dev' \
