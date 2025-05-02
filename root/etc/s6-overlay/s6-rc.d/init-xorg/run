@@ -6,11 +6,8 @@ mkdir -p $HOME/nvidia
 
 driver_version=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader --id=0)
 driver_file=$HOME/nvidia/NVIDIA-Linux-$(arch)-${driver_version}.run
-
-if [[ ! -f "$driver_file" ]]; then
-  curl -L -o $driver_file \
-    $NVIDIA_DRIVER_BASE_URL/${driver_version}/NVIDIA-Linux-$(arch)-${driver_version}.run
-fi
+curl -L --skip-existing -o $driver_file \
+  $NVIDIA_DRIVER_BASE_URL/${driver_version}/NVIDIA-Linux-$(arch)-${driver_version}.run
 
 chmod +x $driver_file
 

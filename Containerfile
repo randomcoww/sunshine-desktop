@@ -35,7 +35,6 @@ RUN set -x \
   && git clone --depth 1 -b v$VERSION \
     --recurse-submodules https://github.com/LizardByte/Sunshine.git /sunshine \
   && cd /sunshine \
-  && chmod +x ./scripts/linux_build.sh \
   && ./scripts/linux_build.sh \
     --publisher-name='LizardByte' \
     --publisher-website='https://app.lizardbyte.dev' \
@@ -60,6 +59,7 @@ RUN set -x \
     # tools
     sudo \
     git-core \
+    git-lfs \
     iproute-tc \
     iptables-nft \
     iputils \
@@ -93,7 +93,6 @@ RUN set -x \
     xdpyinfo \
     glibc-all-langpacks \
     systemd-udev \
-    # f39 fonts
     default-fonts-cjk-mono \
     default-fonts-cjk-sans \
     default-fonts-cjk-serif \
@@ -109,7 +108,6 @@ RUN set -x \
     gtk-xfce-engine \
     xfce4-appfinder \
     xfce4-panel \
-    # xfce4-pulseaudio-plugin \
     xfce4-session \
     xfce4-settings \
     xfce4-terminal \
