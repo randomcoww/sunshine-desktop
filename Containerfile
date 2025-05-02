@@ -1,5 +1,3 @@
-ARG FEDORA_VERSION=39
-
 # add s6 overlay
 # https://github.com/linuxserver/docker-baseimage-fedora/blob/master/Dockerfile
 FROM alpine:edge AS rootfs-stage
@@ -24,7 +22,7 @@ RUN set -x \
 
 ## build sunshine for fedora
 
-FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION AS sunshine
+FROM registry.fedoraproject.org/fedora:latest AS sunshine
 ARG VERSION
 
 RUN set -x \
@@ -46,7 +44,7 @@ RUN set -x \
 
 ## main build
 
-FROM registry.fedoraproject.org/fedora-minimal:$FEDORA_VERSION
+FROM registry.fedoraproject.org/fedora-minimal:latest
 
 COPY --from=rootfs-stage /root-out/ /
 COPY --from=sunshine /sunshine/build/cpack_artifacts/Sunshine.rpm /
