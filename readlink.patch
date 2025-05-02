@@ -3,7 +3,7 @@ index 3b541d9..3400d43 100755
 --- a/scripts/linux_build.sh
 +++ b/scripts/linux_build.sh
 @@ -573,7 +573,7 @@ fi
-
+ 
  # get directory of this script
  script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 -build_dir="$script_dir/../build"

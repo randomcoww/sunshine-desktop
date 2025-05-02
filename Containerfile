@@ -25,7 +25,7 @@ RUN set -x \
 FROM registry.fedoraproject.org/fedora:latest AS sunshine
 ARG VERSION
 
-COPY path.patch /path.patch
+COPY readlink.patch /readlink.patch
 
 RUN set -x \
   \
@@ -40,7 +40,7 @@ RUN set -x \
   && cd /sunshine \
   && ln -sf /usr/bin/gcc-14 /usr/local/bin/gcc \
   && ln -sf /usr/bin/g++-14 /usr/local/bin/g++ \
-  && git apply /path.patch \
+  && git apply /readlink.patch \
   && ./scripts/linux_build.sh \
     --publisher-name='LizardByte' \
     --publisher-website='https://app.lizardbyte.dev' \
