@@ -20,48 +20,21 @@ RUN set -x \
   && tar -C /root-out -Jxpf src/s6-overlay-symlinks-arch.tar.xz \
   && rm -rf src
 
-## build sunshine for fedora
-
-FROM registry.fedoraproject.org/fedora:latest AS sunshine
-ARG VERSION
-
-COPY readlink.patch /readlink.patch
-
-RUN set -x \
-  \
-  && dnf install -y --setopt=install_weak_deps=False \
-    git-core \
-    jq \
-    kernel-devel \
-  \
-  # && VERSION=$(curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | jq -r '.[0].name' | tr -d 'v') \
-  && git clone --depth 1 -b v$VERSION \
-    --recurse-submodules https://github.com/LizardByte/Sunshine.git /sunshine \
-  && cd /sunshine \
-  && ln -sf /usr/bin/gcc-14 /usr/local/bin/gcc \
-  && ln -sf /usr/bin/g++-14 /usr/local/bin/g++ \
-  && git apply /readlink.patch \
-  && ./scripts/linux_build.sh \
-    --publisher-name='LizardByte' \
-    --publisher-website='https://app.lizardbyte.dev' \
-    --publisher-issue-url='https://app.lizardbyte.dev/support' \
-    --sudo-off
-
 ## main build
 
-FROM registry.fedoraproject.org/fedora-minimal:latest
+FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION
 
 COPY --from=rootfs-stage /root-out/ /
-COPY --from=sunshine /sunshine/build/cpack_artifacts/Sunshine.rpm /
 
 RUN set -x \
   \
   && echo 'exclude=*.i386 *.i686' >> /etc/dnf.conf \
-  && microdnf install -y \
+  && dnf install -y \
     https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
-  \
-  && microdnf install -y --setopt=install_weak_deps=False --best \
+  && dnf copr enable -y \
+    lizardbyte/beta \
+  && dnf install -y --setopt=install_weak_deps=False --best \
     # tools
     sudo \
     git-core \
@@ -121,14 +94,13 @@ RUN set -x \
     xfdesktop \
     xfwm4 \
     # apps
-    /Sunshine.rpm \
+    Sunshine \
     flatpak \
   \
-  && microdnf clean all \
+  && dnf clean all \
   && rm -rf \
     /var/cache \
-    /var/log/* \
-    /Sunshine.rpm
+    /var/log/*
 
 RUN set -x \
   \
