@@ -22,6 +22,7 @@ RUN set -x \
 
 ## main build
 
+ARG FEDORA_VERSION
 FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION
 
 COPY --from=rootfs-stage /root-out/ /

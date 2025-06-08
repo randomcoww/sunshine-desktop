@@ -14,6 +14,9 @@ on:
     branches:
     - master
 
+env:
+  FEDORA_VERSION: 42
+
 jobs:
   build:
     runs-on: arc-runner-${{ github.event.repository.name }}
@@ -44,5 +47,6 @@ jobs:
           --dockerfile="./Containerfile" \
           --context="${{ github.repositoryUrl }}#${{ github.ref }}#${{ github.sha }}" \
           --destination="ghcr.io/${{ github.repository }}:v$VERSION.$TAG" \
+          --build-arg FEDORA_VERSION=$FEDORA_VERSION \
           --build-arg VERSION=$VERSION \
           --push-retry 3
