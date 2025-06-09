@@ -2,6 +2,7 @@
 
 set -xe
 
+mkdir -p /run/dbus
 chown -R dbus /run/dbus
 exec s6-setuidgid dbus \
   dbus-daemon \

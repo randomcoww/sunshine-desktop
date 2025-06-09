@@ -56,6 +56,8 @@ RUN set -x \
     vim-minimal \
     tmux \
     bash-completion \
+    gawk \
+    cvt \
     \
     mesa-dri-drivers \
     mesa-va-drivers-freeworld \
