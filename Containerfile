@@ -1,6 +1,6 @@
 # add s6 overlay
 # https://github.com/linuxserver/docker-baseimage-fedora/blob/master/Dockerfile
-FROM alpine:edge AS rootfs-stage
+FROM alpine:latest AS rootfs-stage
 
 RUN set -x \
   \
