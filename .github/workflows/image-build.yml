@@ -15,7 +15,7 @@ on:
     - master
 
 env:
-  FEDORA_VERSION: 42
+  FEDORA_VERSION: 41
 
 jobs:
   build:
