@@ -50,6 +50,7 @@ jobs:
           --destination="ghcr.io/${{ github.repository }}:v$VERSION.$TAG" \
           --build-arg FEDORA_VERSION=$FEDORA_VERSION \
           --build-arg VERSION=$VERSION \
+          --cache \
           --push-retry 3
   cleanup:
     needs:
