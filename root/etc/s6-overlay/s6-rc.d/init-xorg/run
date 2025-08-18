@@ -46,7 +46,7 @@ cat > /etc/X11/xorg.conf.d/50-custom.conf <<EOF
 Section "Screen"
     Identifier "Screen0"
     Monitor    "Monitor0"
-    Option     "ConnectedMonitor" "$DISPLAY_DEVICE"
+    Option     "PrimaryGPU" "yes"
     Option     "ModeValidation" "NoMaxPClkCheck,NoEdidMaxPClkCheck,NoMaxSizeCheck,NoHorizSyncCheck,NoVertRefreshCheck,NoVirtualSizeCheck,NoTotalSizeCheck,NoDualLinkDVICheck,NoDisplayPortBandwidthCheck,AllowNon3DVisionModes,AllowNonHDMI3DModes,AllowNonEdidModes,NoEdidHDMI2Check,AllowDpInterlaced"
 EndSection
 
