@@ -8,4 +8,10 @@ display_device=$(xrandr | grep " connected" | awk '{ print $1 }')
 if xrandr --newmode $modeline; then
   xrandr --addmode $display_device $(echo $modeline | awk '{print $1}')
 fi
-xrandr --output $display_device --primary --mode $(echo $modeline | awk '{print $1}') --pos 0x0 --rotate normal --scale 1
+xrandr \
+  --output $display_device \
+  --primary \
+  --mode $(echo $modeline | awk '{print $1}') \
+  --pos 0x0 \
+  --rotate normal \
+  --scale 1

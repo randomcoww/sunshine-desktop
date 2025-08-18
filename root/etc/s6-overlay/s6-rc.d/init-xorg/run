@@ -7,12 +7,13 @@ mkdir -p $HOME/nvidia
 targetarch=$(arch)
 driver_version=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader --id=0)
 driver_file=$HOME/nvidia/NVIDIA-Linux-${targetarch}-${driver_version}.run
+xorg_conf_file=/etc/X11/xorg.conf.d/40-sunshine.conf
 
 NVIDIA_DRIVER_BASE_URL=${NVIDIA_DRIVER_BASE_URL:-https://us.download.nvidia.com/XFree86/${targetarch/x86_64/Linux-x86_64}}
-curl -L --skip-existing -o $driver_file \
+curl -L --skip-existing -o "$driver_file" \
   $NVIDIA_DRIVER_BASE_URL/${driver_version}/NVIDIA-Linux-${targetarch}-${driver_version}.run
 
-chmod +x $driver_file
+chmod +x "$driver_file"
 
 "$driver_file" \
   --silent \
@@ -32,26 +33,59 @@ chmod +x $driver_file
   --no-libglx-indirect \
   --no-install-libglvnd
 
+cat > "$xorg_conf_file" <<EOF
+Section "Device"
+  Identifier "Device0"
+  Driver     "nvidia"
+  Option     "PrimaryGPU" "yes"
+  Option     "UseEDID" "False"
+  Option     "ModeValidation" "NoMaxPClkCheck,NoEdidMaxPClkCheck,NoMaxSizeCheck,NoHorizSyncCheck,NoVertRefreshCheck,NoVirtualSizeCheck,NoTotalSizeCheck,NoDualLinkDVICheck,NoDisplayPortBandwidthCheck,AllowNon3DVisionModes,AllowNonHDMI3DModes,AllowNonEdidModes,NoEdidHDMI2Check,AllowDpInterlaced"
+EndSection
+
+Section "InputClass"
+  Identifier      "evdev pointer catchall"
+  MatchIsPointer  "on"
+  MatchDevicePath "/dev/input/event*"
+  Option          "AccelProfile" "flat"
+  Driver          "evdev"
+EndSection
+
+Section "InputClass"
+  Identifier      "evdev keyboard catchall"
+  MatchIsKeyboard "on"
+  MatchDevicePath "/dev/input/event*"
+  Driver          "evdev"
+EndSection
+
+Section "InputClass"
+  Identifier      "evdev touchpad catchall"
+  MatchIsTouchpad "on"
+  MatchDevicePath "/dev/input/event*"
+  Driver          "evdev"
+EndSection
+
+Section "InputClass"
+  Identifier      "evdev tablet catchall"
+  MatchIsTablet   "on"
+  MatchDevicePath "/dev/input/event*"
+  Driver          "evdev"
+EndSection
+
+Section "InputClass"
+  Identifier         "evdev touchscreen catchall"
+  MatchIsTouchscreen "on"
+  MatchDevicePath    "/dev/input/event*"
+  Driver             "evdev"
+EndSection
+EOF
+
 nvidia-xconfig \
   --depth="$COLOR_DEPTH" \
-  --allow-empty-initial-configuration \
   --no-probe-all-gpus \
   --egpu \
   --no-sli \
   --no-base-mosaic \
   --only-one-x-screen \
-  --use-display-device=$DISPLAY_DEVICE
-
-cat > /etc/X11/xorg.conf.d/50-custom.conf <<EOF
-Section "Screen"
-    Identifier "Screen0"
-    Monitor    "Monitor0"
-    Option     "PrimaryGPU" "yes"
-    Option     "ModeValidation" "NoMaxPClkCheck,NoEdidMaxPClkCheck,NoMaxSizeCheck,NoHorizSyncCheck,NoVertRefreshCheck,NoVirtualSizeCheck,NoTotalSizeCheck,NoDualLinkDVICheck,NoDisplayPortBandwidthCheck,AllowNon3DVisionModes,AllowNonHDMI3DModes,AllowNonEdidModes,NoEdidHDMI2Check,AllowDpInterlaced"
-EndSection
-
-Section "InputClass"
-    Identifier "libinput pointer catchall"
-    Option     "AccelProfile" "flat"
-EndSection
-EOF
+  --connected-monitor=$DISPLAY_DEVICE \
+  --xconfig="$xorg_conf_file" \
+  --output-xconfig="$xorg_conf_file"
