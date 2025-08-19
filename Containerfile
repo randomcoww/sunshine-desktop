@@ -98,7 +98,7 @@ RUN set -x \
     xfdesktop \
     xfwm4 \
     # apps
-    Sunshine-$VERSION \
+    Sunshine \
     flatpak \
   \
   && dnf clean all \
