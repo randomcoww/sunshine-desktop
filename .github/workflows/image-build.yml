@@ -16,6 +16,7 @@ on:
 
 env:
   FEDORA_VERSION: 42
+  VERSION: 2025.628.4510
 
 jobs:
   build:
@@ -28,7 +29,7 @@ jobs:
     steps:
     - name: Set tag
       run: |
-        echo VERSION=$(wget -O - https://api.github.com/repos/LizardByte/Sunshine/tags | grep name | head -1 | cut -d '"' -f 4 | tr -d 'v') | tee -a "$GITHUB_ENV"
+        # echo VERSION=$(wget -O - https://api.github.com/repos/LizardByte/Sunshine/tags | grep name | head -1 | cut -d '"' -f 4 | tr -d 'v') | tee -a "$GITHUB_ENV"
         echo TAG=$(date -u +'%Y%m%d.%H%M') | tee -a "$GITHUB_ENV"
 
     - name: Build and release container
