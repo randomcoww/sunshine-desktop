@@ -71,7 +71,6 @@ RUN set -x \
     glx-utils \
     dbus-x11 \
     xorg-x11-server-Xorg \
-    xorg-x11-drv-evdev \
     xrandr \
     xdpyinfo \
     glibc-all-langpacks \
