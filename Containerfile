@@ -34,7 +34,7 @@ RUN set -x \
     https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
   && dnf copr enable -y \
-    lizardbyte/beta \
+    lizardbyte/stable \
   && dnf install -y --setopt=install_weak_deps=False --best \
     # tools
     sudo \
@@ -98,7 +98,7 @@ RUN set -x \
     xfdesktop \
     xfwm4 \
     # apps
-    Sunshine \
+    Sunshine-$VERSION \
     flatpak \
   \
   && dnf clean all \
