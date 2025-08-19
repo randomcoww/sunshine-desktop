@@ -43,6 +43,12 @@ Section "Device"
 EndSection
 
 Section "InputClass"
+  Identifier "evdev pointer catchall"
+  Option     "AccelProfile" "flat"
+  Driver     "evdev"
+EndSection
+
+Section "InputClass"
   Identifier "libinput pointer catchall"
   Option     "AccelProfile" "flat"
   Driver     "libinput"
