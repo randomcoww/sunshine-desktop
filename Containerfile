@@ -4,16 +4,16 @@ FROM alpine:latest AS rootfs-stage
 
 RUN set -x \
   \
-  && VERSION=$(wget -O - https://api.github.com/repos/just-containers/s6-overlay/releases/latest | grep tag_name | cut -d '"' -f 4 | tr -d 'v') \
+  && VERSION=$(wget -O - https://api.github.com/repos/just-containers/s6-overlay/releases/latest | grep tag_name | cut -d '"' -f 4) \
   && mkdir -p /root-out src \
   && wget -O src/s6-overlay-noarch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-noarch.tar.xz \
+    https://github.com/just-containers/s6-overlay/releases/download/${VERSION}/s6-overlay-noarch.tar.xz \
   && wget -O src/s6-overlay-arch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-$(arch).tar.xz \
+    https://github.com/just-containers/s6-overlay/releases/download/${VERSION}/s6-overlay-$(arch).tar.xz \
   && wget -O src/s6-overlay-symlinks-noarch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-symlinks-noarch.tar.xz \
+    https://github.com/just-containers/s6-overlay/releases/download/${VERSION}/s6-overlay-symlinks-noarch.tar.xz \
   && wget -O src/s6-overlay-symlinks-arch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-symlinks-arch.tar.xz \
+    https://github.com/just-containers/s6-overlay/releases/download/${VERSION}/s6-overlay-symlinks-arch.tar.xz \
   && tar -C /root-out -Jxpf src/s6-overlay-noarch.tar.xz \
   && tar -C /root-out -Jxpf src/s6-overlay-arch.tar.xz \
   && tar -C /root-out -Jxpf src/s6-overlay-symlinks-noarch.tar.xz \
