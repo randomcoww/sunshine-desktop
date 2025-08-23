@@ -7,7 +7,6 @@ mkdir -p $HOME/nvidia
 targetarch=$(arch)
 driver_version=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader --id=0)
 driver_file=$HOME/nvidia/NVIDIA-Linux-${targetarch}-${driver_version}.run
-xorg_conf_file=/etc/X11/xorg.conf.d/40-sunshine.conf
 
 NVIDIA_DRIVER_BASE_URL=${NVIDIA_DRIVER_BASE_URL:-https://us.download.nvidia.com/XFree86/${targetarch/x86_64/Linux-x86_64}}
 curl -L --skip-existing -o "$driver_file" \

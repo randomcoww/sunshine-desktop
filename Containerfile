@@ -22,37 +22,12 @@ RUN set -x \
   && tar -C /root-out -Jxpf src/s6-overlay-symlinks-arch.tar.xz \
   && rm -rf src
 
-## build flatpak without dbus dependency
-
-ARG FEDORA_VERSION
-FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION AS rpmbuild
-
-RUN set -x \
-  \
-  && dnf install -y --setopt=install_weak_deps=False \
-    rpmdevtools \
-    dnf-plugins-core \
-    git \
-    createrepo_c \
-  \
-  && mkdir -p $HOME/rpmbuild/ \
-  && cd $HOME/rpmbuild \
-  && git clone -b f$(rpm -E %fedora) https://src.fedoraproject.org/rpms/flatpak.git SOURCES/ \
-  && cd SOURCES \
-  && spectool -gR flatpak.spec \
-  && dnf builddep -y flatpak.spec \
-  && rpmbuild -bb flatpak.spec \
-    --without malcontent \
-  && createrepo_c $HOME/rpmbuild/RPMS
-
 ## main build
 
 ARG FEDORA_VERSION
 FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION
 
-COPY --from=rpmbuild /root/rpmbuild/RPMS /RPMS
 COPY --from=rootfs-stage /root-out/ /
-COPY local.repo /etc/yum.repos.d/
 
 RUN set -x \
   \
@@ -66,7 +41,6 @@ RUN set -x \
     # tools
     sudo \
     git-core \
-    git-lfs \
     iproute-tc \
     iptables-nft \
     iputils \
@@ -96,7 +70,6 @@ RUN set -x \
     pulseaudio \
     pulseaudio-utils \
     glx-utils \
-    dbus \
     glibc-all-langpacks \
     systemd-udev \
     default-fonts-cjk-mono \
@@ -111,11 +84,12 @@ RUN set -x \
     default-fonts-other-sans \
     default-fonts-other-serif \
     # Sway
-    sway \
     seatd \
+    sway \
+    foot \
     # apps
     Sunshine \
-    flatpak \
+    xorg-x11-drv-libinput \
   \
   && dnf clean all \
   && rm -rf \

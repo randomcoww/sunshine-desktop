@@ -2,10 +2,6 @@
 
 set -xe
 
-while ! xdpyinfo >/dev/null 2>&1; do
-sleep 1
-done
-
 exec s6-setuidgid $USER \
   sunshine \
     origin_web_ui_allowed=wan \
