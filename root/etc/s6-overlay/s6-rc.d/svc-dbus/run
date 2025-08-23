@@ -4,7 +4,7 @@ set -xe
 
 mkdir -p /run/dbus
 chown -R dbus /run/dbus
-exec s6-setuidgid dbus \
+exec s6-setuidgid $USER \
   dbus-daemon \
     --nofork \
     --nopidfile \

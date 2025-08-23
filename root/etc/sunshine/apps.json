@@ -2,12 +2,7 @@
   "apps": [
     {
       "name": "Desktop",
-      "image-path": "desktop.png",
-      "prep-cmd": [
-        {
-          "do": "/etc/sunshine/set-resolution.sh"
-        }
-      ]
+      "image-path": "desktop.png"
     }
   ],
   "env": {

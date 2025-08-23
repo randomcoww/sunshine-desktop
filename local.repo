@@ -1,0 +1,6 @@
+[local-repo]
+name=Local Repository
+baseurl=file:////RPMS/
+enabled=1
+gpgcheck=0
+priority=1
