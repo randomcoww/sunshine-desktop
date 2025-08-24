@@ -39,6 +39,7 @@ RUN set -x \
     lizardbyte/stable \
   && dnf install -y --setopt=install_weak_deps=False --best \
     # tools
+    tini \
     sudo \
     git-core \
     iproute-tc \
@@ -89,6 +90,9 @@ RUN set -x \
     foot \
     # apps
     Sunshine \
+    steam \
+    gamescope \
+    wlr-randr \
     xorg-x11-drv-libinput \
   \
   && dnf clean all \
@@ -105,7 +109,15 @@ ENV \
   S6_VERBOSITY=1 \
   LANG=C.UTF-8 \
   SUNSHINE_PORT=47989 \
-  COLOR_DEPTH=24
+  COLOR_DEPTH=24 \
+  DESKTOP_SESSION=sway \
+  XDG_CURRENT_DESKTOP=sway \
+  XDG_DATA_DIRS=/usr/local/share:/usr/share \
+  XDG_SESSION_DESKTOP=sway \
+  XDG_SESSION_TYPE=wayland \
+  WLR_BACKENDS=headless,libinput \
+  WLR_LIBINPUT_NO_DEVICES=1 \
+  LIBSEAT_BACKEND=seatd
 
 # ENV \
 #   USER=sunshine \

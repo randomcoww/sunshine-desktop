@@ -14,6 +14,7 @@ curl -L --skip-existing -o "$driver_file" \
 
 chmod +x "$driver_file"
 
+# TODO: try removing --no-install-libglvnd when https://github.com/LizardByte/Sunshine/issues/4050 is resolved
 "$driver_file" \
   --silent \
   --accept-license \
