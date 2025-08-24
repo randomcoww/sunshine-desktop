@@ -1,17 +1,12 @@
-### Container for Sunshine with integrated XFCE desktop
+### Container for Steam over Sunshine
 
-Based on https://github.com/Steam-Headless/docker-steam-headless/tree/master
+Originally based on https://github.com/Steam-Headless/docker-steam-headless/tree/master but has changed quite a bit now.
 
-Notable differences include
+Currently migrating to Wayland and isn't able to fully use the Nvidia GPU. Nvidia graphics acceleration works in applications like games, but desktop rendering and Sunshine encoding seems to only work on an alternate GPU with non proprietary drivers.
 
-- No Steam or browser by default. They can be added as user flatpaks.
-- No VNC. Sunshine only for remote access.
-- Requires Nvidia GPU. Setup breaks unless `nvidia-smi` can run.
-- Built on Fedora 39 (Sunshine CUDA build only supports up to F39).
-- Runs on S6-overlay init.
-- Intended to work in Kubernetes with configMap mounts to support service configuration.
+My environment is also a little unique and some common modules like `nvidia-drm` are currently not installed with the driver, so this may be the issue.
 
-Latest release
+Latest Sunshine release
 
 ```bash
 curl -s https://api.github.com/repos/LizardByte/Sunshine/tags | grep name | head -1 | cut -d '"' -f 4 | tr -d 'v'
