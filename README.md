@@ -66,6 +66,7 @@ Entrypoint runs `tini --`
 
   runuser -p -u $USER -- bash <<EOT
   set -e
+  cd $HOME
 
   ## Pulseaudio ##
 
