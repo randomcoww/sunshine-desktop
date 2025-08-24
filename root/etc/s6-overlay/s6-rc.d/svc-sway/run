@@ -1,6 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-set -xe
-
-exec s6-setuidgid $USER \
-  sway

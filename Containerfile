@@ -1,33 +1,5 @@
 ARG FEDORA_VERSION
-
-# add s6 overlay
-# https://github.com/linuxserver/docker-baseimage-fedora/blob/master/Dockerfile
-FROM alpine:latest AS rootfs-stage
-
-RUN set -x \
-  \
-  && VERSION=$(wget -O - https://api.github.com/repos/just-containers/s6-overlay/releases/latest | grep tag_name | cut -d '"' -f 4) \
-  && mkdir -p /root-out src \
-  && wget -O src/s6-overlay-noarch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/${VERSION}/s6-overlay-noarch.tar.xz \
-  && wget -O src/s6-overlay-arch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/${VERSION}/s6-overlay-$(arch).tar.xz \
-  && wget -O src/s6-overlay-symlinks-noarch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/${VERSION}/s6-overlay-symlinks-noarch.tar.xz \
-  && wget -O src/s6-overlay-symlinks-arch.tar.xz \
-    https://github.com/just-containers/s6-overlay/releases/download/${VERSION}/s6-overlay-symlinks-arch.tar.xz \
-  && tar -C /root-out -Jxpf src/s6-overlay-noarch.tar.xz \
-  && tar -C /root-out -Jxpf src/s6-overlay-arch.tar.xz \
-  && tar -C /root-out -Jxpf src/s6-overlay-symlinks-noarch.tar.xz \
-  && tar -C /root-out -Jxpf src/s6-overlay-symlinks-arch.tar.xz \
-  && rm -rf src
-
-## main build
-
-ARG FEDORA_VERSION
 FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION
-
-COPY --from=rootfs-stage /root-out/ /
 
 RUN set -x \
   \
@@ -101,12 +73,9 @@ RUN set -x \
     /var/log/* \
   && echo '%wheel ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/wheel
 
-COPY /root /
+COPY sunshine-prep-cmd.sh /usr/local/bin/
 
 ENV \
-  S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0 \
-  S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-  S6_VERBOSITY=1 \
   LANG=C.UTF-8 \
   SUNSHINE_PORT=47989 \
   COLOR_DEPTH=24 \
@@ -127,4 +96,4 @@ ENV \
 #   SUNSHINE_USERNAME=sunshine \
 #   SUNSHINE_PASSWORD=password
 
-ENTRYPOINT ["/init"]
+ENTRYPOINT ["tini", "--"]
