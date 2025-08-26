@@ -10,7 +10,6 @@ RUN set -x \
   && dnf copr enable -y \
     lizardbyte/beta \
   && dnf install -y --setopt=install_weak_deps=False --best \
-    # tools
     tini \
     sudo \
     git-core \
@@ -31,20 +30,7 @@ RUN set -x \
     tmux \
     bash-completion \
     gawk \
-    cvt \
-    \
-    mesa-dri-drivers \
-    mesa-va-drivers-freeworld \
-    mesa-vdpau-drivers-freeworld \
-    mesa-vulkan-drivers \
-    libva-nvidia-driver \
-    vulkan \
-    vulkan-tools \
-    pulseaudio \
-    pulseaudio-utils \
-    glx-utils \
     glibc-all-langpacks \
-    systemd-udev \
     default-fonts-cjk-mono \
     default-fonts-cjk-sans \
     default-fonts-cjk-serif \
@@ -56,16 +42,27 @@ RUN set -x \
     default-fonts-other-mono \
     default-fonts-other-sans \
     default-fonts-other-serif \
-    # Sway
+    \
+    mesa-dri-drivers \
+    mesa-va-drivers-freeworld \
+    mesa-vdpau-drivers-freeworld \
+    mesa-vulkan-drivers \
+    libva-nvidia-driver \
+    vulkan \
+    vulkan-tools \
+    glx-utils \
+    \
+    systemd-udev \
+    pulseaudio \
+    pulseaudio-utils \
     seatd \
     sway \
+    wlr-randr \
+    xorg-x11-drv-libinput \
     foot \
-    # apps
     Sunshine \
     steam \
     gamescope \
-    wlr-randr \
-    xorg-x11-drv-libinput \
   \
   && dnf clean all \
   && rm -rf \
@@ -78,7 +75,6 @@ COPY sunshine-prep-cmd.sh /usr/local/bin/
 ENV \
   LANG=C.UTF-8 \
   SUNSHINE_PORT=47989 \
-  COLOR_DEPTH=24 \
   DESKTOP_SESSION=sway \
   XDG_CURRENT_DESKTOP=sway \
   XDG_DATA_DIRS=/usr/local/share:/usr/share \
@@ -86,14 +82,16 @@ ENV \
   XDG_SESSION_TYPE=wayland \
   WLR_BACKENDS=headless,libinput \
   WLR_LIBINPUT_NO_DEVICES=1 \
+  WAYLAND_DISPLAY=wayland-1 \
   LIBSEAT_BACKEND=seatd
 
 # ENV \
+#   NVIDIA_VISIBLE_DEVICES=all \
+#   NVIDIA_DRIVER_CAPABILITIES=all \
+#   TZ=America/Los_Angeles \
 #   USER=sunshine \
 #   UID=10000 \
 #   HOME=/home/sunshine \
-#   XDG_RUNTIME_DIR=/run/user/10000 \
-#   SUNSHINE_USERNAME=sunshine \
-#   SUNSHINE_PASSWORD=password
+#   XDG_RUNTIME_DIR=/run/user/10000
 
 ENTRYPOINT ["tini", "--"]

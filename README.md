@@ -86,7 +86,6 @@ Entrypoint runs `tini --`
 
   ## Sunshine ##
 
-  sunshine --creds $SUNSHINE_USERNAME $SUNSHINE_PASSWORD
   exec sunshine \
     origin_web_ui_allowed=wan \
     port=$SUNSHINE_PORT \
