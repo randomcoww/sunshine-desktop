@@ -58,7 +58,6 @@ RUN set -x \
     seatd \
     sway \
     wlr-randr \
-    xorg-x11-drv-libinput \
     foot \
     Sunshine \
     steam \
