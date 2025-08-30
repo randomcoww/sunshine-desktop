@@ -13,6 +13,7 @@ RUN set -x \
     tini \
     sudo \
     git-core \
+    git-lfs \
     iproute-tc \
     iptables-nft \
     iputils \
@@ -30,6 +31,7 @@ RUN set -x \
     tmux \
     bash-completion \
     gawk \
+    \
     glibc-all-langpacks \
     default-fonts-cjk-mono \
     default-fonts-cjk-sans \
