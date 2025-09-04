@@ -67,6 +67,9 @@ RUN set -x \
     # called by steam
     xdg-user-dir \
     lsb_release \
+    pciutils \
+    diffutils \
+    dbus-launch \
   \
   && dnf clean all \
   && rm -rf \
