@@ -75,6 +75,7 @@ COPY sunshine-prep-cmd.sh /usr/local/bin/
 
 ENV \
   LANG=C.UTF-8 \
+  LC_ALL=C.UTF-8 \
   SUNSHINE_PORT=47989 \
   DESKTOP_SESSION=sway \
   XDG_CURRENT_DESKTOP=sway \
