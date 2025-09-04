@@ -64,6 +64,9 @@ RUN set -x \
     Sunshine \
     steam \
     gamescope \
+    # called by steam
+    xdg-user-dir \
+    lsb_release \
   \
   && dnf clean all \
   && rm -rf \
