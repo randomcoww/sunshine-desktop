@@ -96,6 +96,8 @@ ENV \
 # ENV \
 #   NVIDIA_VISIBLE_DEVICES=all \
 #   NVIDIA_DRIVER_CAPABILITIES=all \
+#   __NV_PRIME_RENDER_OFFLOAD=1 \
+#   __GLX_VENDOR_LIBRARY_NAME=nvidia \
 #   TZ=America/Los_Angeles \
 #   USER=sunshine \
 #   UID=10000 \
