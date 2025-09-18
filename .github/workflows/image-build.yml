@@ -67,7 +67,7 @@ jobs:
         set -e
 
         regctl registry set $INTERNAL_REGISTRY --cacert "$INTERNAL_CA_CERT"
-        tags=$(regctl tag ls $INTERNAL_REGISTRY/${{ github.repository }} | sort -r)
+        tags=$(regctl tag ls $INTERNAL_REGISTRY/${{ github.repository }} | grep -v latest | sort -r)
         set -- $tags
 
         i=0
