@@ -65,18 +65,14 @@ jobs:
     - name: Remove old tags
       run: |
         set -e
-
         regctl registry set $INTERNAL_REGISTRY --cacert "$INTERNAL_CA_CERT"
         tags=$(regctl tag ls $INTERNAL_REGISTRY/${{ github.repository }} | grep -v latest | sort -r)
-        set -- $tags
 
         i=0
-        while [ "$i" -lt "$TAGS_KEEP" ]; do
-          shift
-          i=$((i + 1))
-        done
-
         for tag in $@; do
-          echo "Delete $tag"
-          regctl tag delete --ignore-missing $INTERNAL_REGISTRY/${{ github.repository }}:$tag
+          if [ "$i" -ge "$TAGS_KEEP" ]; then
+            echo "Delete $tag"
+            regctl tag delete --ignore-missing $INTERNAL_REGISTRY/${{ github.repository }}:$tag
+          fi
+          i=$((i + 1))
         done
