@@ -52,7 +52,16 @@ jobs:
           --destination="$INTERNAL_REGISTRY/${{ github.repository }}:v$TAG" \
           --registry-certificate=$INTERNAL_REGISTRY=$DOCKER_CONFIG/internal.crt \
           --build-arg FEDORA_VERSION=$FEDORA_VERSION \
-          --push-retry 3
+          --use-new-run \
+          --skip-unused-stages \
+          --snapshot-mode=redo \
+          --cache=true \
+          --cache-dir=/cache \
+          --compressed-caching=false \
+          --cleanup \
+          --cache-copy-layers \
+          --image-fs-extract-retry=6 \
+          --push-retry=6
   cleanup:
     needs:
       - build
