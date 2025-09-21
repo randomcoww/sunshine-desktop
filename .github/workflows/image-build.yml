@@ -55,13 +55,10 @@ jobs:
           --use-new-run \
           --skip-unused-stages \
           --snapshot-mode=redo \
-          --cache=true \
-          --cache-dir=/cache \
-          --compressed-caching=false \
           --cleanup \
-          --cache-copy-layers \
-          --image-fs-extract-retry=6 \
-          --push-retry=6
+          --image-download-retry=4 \
+          --image-fs-extract-retry=4 \
+          --push-retry=4
   cleanup:
     needs:
       - build
@@ -75,10 +72,8 @@ jobs:
       run: |
         set -e
         regctl registry set $INTERNAL_REGISTRY --cacert "$INTERNAL_CA_CERT"
-        tags=$(regctl tag ls $INTERNAL_REGISTRY/${{ github.repository }} | grep -v latest | sort -r)
-
         i=0
-        for tag in $tags; do
+        for tag in $(regctl tag ls $INTERNAL_REGISTRY/${{ github.repository }} --exclude latest | sort -r); do
           if [ "$i" -ge "$TAGS_KEEP" ]; then
             echo "Delete $tag"
             regctl tag delete --ignore-missing $INTERNAL_REGISTRY/${{ github.repository }}:$tag
